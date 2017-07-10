@@ -1,3 +1,4 @@
+rm -rf inst
 cd server
 BASEPATH=/home/hyeonseok/mariadb/inst
 cmake \
