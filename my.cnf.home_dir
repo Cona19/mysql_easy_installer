@@ -34,7 +34,7 @@
 [client]
 #password	= [your_password]
 port		= 12943
-socket		= /opt/nvm/hyeonseok/mariadb/inst/mysql.sock
+socket		= /home/hyeonseok/mariadb/inst/mysql.sock
 
 # *** Application-specific options follow here ***
 
@@ -44,10 +44,10 @@ socket		= /opt/nvm/hyeonseok/mariadb/inst/mysql.sock
 [mysqld]
 
 # generic configuration options
-datadir     = /opt/nvm/hyeonseok/mariadb/inst/data
+datadir     = /home/hyeonseok/mariadb/inst/data
 user        = hyeonseok
 port		= 12943
-socket		= /opt/nvm/hyeonseok/mariadb/inst/mysql.sock
+socket		= /home/hyeonseok/mariadb/inst/mysql.sock
 
 # back_log is the number of connections the operating system can keep in
 # the listen queue, before the MariaDB connection manager thread has
@@ -446,8 +446,8 @@ write_buffer = 8M
 interactive-timeout
 
 [mysqld_safe]
-log-error=/opt/nvm/hyeonseok/mariadb/inst/mysqld.log
-pid-file=/opt/nvm/hyeonseok/mariadb/inst/mysqld.pid
+log-error=/home/hyeonseok/mariadb/inst/mysqld.log
+pid-file=/home/hyeonseok/mariadb/inst/mysqld.pid
 # Increase the amount of open files allowed per process. Warning: Make
 # sure you have set the global system limit high enough! The high value
 # is required for a large number of opened tables
