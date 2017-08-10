@@ -60,9 +60,9 @@ NUM_CONN=1
 
 cd /opt/nvm/hyeonseok/mariadb/inst
 ./bin/mysqld_safe &
-sleep 60 
+sleep 60
 cd ../sysbench_java/
-TEST_NAME=delta_100G_flush3_${NUM_CONN}con_128Mlog
+TEST_NAME=delta_100G_no_flush3_${NUM_CONN}con_128MB
 
 mysqladmin -u root create benchmark
 mysql -u root benchmark < create_table.sql
@@ -70,9 +70,9 @@ java -cp "mariadb-java-client-2.0.3.jar:." DBGen
 mysqladmin -u root shutdown
 rm -f ../inst/mysqld.log
 
-#cp ../my.cnf2 ../inst/my.cnf
+cp ../my.cnf2 ../inst/my.cnf
 ../inst/bin/mysqld_safe &
-sleep 120
+read word
 
 java -cp "mariadb-java-client-2.0.3.jar:." BenchClient ${NUM_CONN} 1 ${TEST_NAME}
 mv ../inst/mysqld.log ./${TEST_NAME}.log
