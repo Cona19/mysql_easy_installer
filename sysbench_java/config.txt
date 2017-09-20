@@ -1,0 +1,10 @@
+DB.User=root
+DB.Pass=
+DB.Url=jdbc:mysql://127.0.0.1:12943/benchmark?allowMultiQueries=true
+DB.JdbcDriver=org.mariadb.jdbc.Driver
+DB.TableSize=500000
+DB.NumTables=100
+EXP.NumOfRowRead=100
+EXP.NumOfRowUpdate=20
+EXP.Duration=300
+EXP.WarmUp=60

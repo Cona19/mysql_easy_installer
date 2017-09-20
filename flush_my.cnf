@@ -430,7 +430,7 @@ innodb_doublewrite = 0
 
 innodb_compression_level = 0
 
-innodb_orig_delta_flush = 0
+innodb_orig_delta_flush = 1
 innodb_no_orig_flush = 0
 innodb_file_format = Antelope
 innodb_default_row_format = REDUNDANT

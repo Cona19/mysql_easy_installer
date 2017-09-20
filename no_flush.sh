@@ -1,4 +1,6 @@
 cd /opt/nvm/hyeonseok/mariadb/
+#rm -rf data
+#cp -r data.backup data
 rm -rf inst
 cd server
 #rm -rf CMakeCache.txt
@@ -6,7 +8,7 @@ BASEPATH=/opt/nvm/hyeonseok/mariadb/inst
 cmake \
     -DWITH_DEBUG=1 \
     -DCMAKE_INSTALL_PREFIX=$BASEPATH \
-    -DMYSQL_DATADIR=$BASEPATH/data \
+    -DMYSQL_DATADIR=$BASEPATH/../data \
     -DMYSQL_UNIX_ADDR=$BASEPATH/mysql.sock \
     -DSYSCONFDIR=$BASEPATH/etc \
     -DMYSQL_TCP_PORT=12943 \
@@ -32,47 +34,38 @@ make -j
 make install -j
 
 cd ../inst/
-cp ../my.cnf ./
-./scripts/mysql_install_db \
-    --basedir=$BASEPATH \
-    --datadir=$BASEPATH/data \
-    --defaults-file=my.cnf \
-    --skip-name-resolve \
-    --user=hyeonseok \
-    --verbose
+cp ../no_flush_my.cnf ./my.cnf
+#./scripts/mysql_install_db \
+#    --basedir=$BASEPATH \
+#    --datadir=$BASEPATH/data \
+#    --defaults-file=my.cnf \
+#    --skip-name-resolve \
+#    --user=hyeonseok \
+#    --verbose
    # --force \
 
-#./bin/mysqld_safe &
-#sleep 120
-#cd ../tpcc-mysql
-#cd tpcc-mysql
-#cd src
-#make clean
-#make
-#cd ..
-#mysqladmin -u root create tpcc100
-#mysql -u root tpcc100 < create_table.sql 
-#mysql -u root tpcc100 < add_fkey_idx.sql 
-#./tpcc_load -h127.0.0.1 -P12943 -d tpcc100 -u root -p "" -w100
-#./tpcc_start -h127.0.0.1 -P12943 -d tpcc100 -u root -p "" -w100 -c48 -r10 -l300
+if [ -z "$1" ]
+then
+    NUM_CONN=100
+else
+    NUM_CONN=$1
+fi
+if [ -z "$2" ]
+then
+    TEST_NAME=no_flush_${NUM_CONN}
+else
+    TEST_NAME=no_flush_$2_${NUM_CONN}
+fi
+if [ -z "$3" ]
+then
+    METHOD=random
+else
+    METHOD=$3
+fi
 
-NUM_CONN=1
-
-cd /opt/nvm/hyeonseok/mariadb/inst
-./bin/mysqld_safe &
-sleep 60
-cd ../sysbench_java/
-TEST_NAME=delta_100G_no_flush3_${NUM_CONN}con_128MB
-
-mysqladmin -u root create benchmark
-mysql -u root benchmark < create_table.sql
-java -cp "mariadb-java-client-2.0.3.jar:." DBGen
-mysqladmin -u root shutdown
-rm -f ../inst/mysqld.log
-
-cp ../my.cnf2 ../inst/my.cnf
+cd /opt/nvm/hyeonseok/mariadb/${METHOD}_java/
 ../inst/bin/mysqld_safe &
-read word
+sleep 600
 
 java -cp "mariadb-java-client-2.0.3.jar:." BenchClient ${NUM_CONN} 1 ${TEST_NAME}
 mv ../inst/mysqld.log ./${TEST_NAME}.log
